@@ -3,4 +3,11 @@
 
 void gestion_client();
 void Gestion_solde();
+void acheter();
+//menu 3
+void affichage_catalogue();
+void details_produit();
+void recherche_produits();
+void catalogue_produits();
+
 void Menu();

@@ -3,7 +3,7 @@
 #include <string.h>
 #include <stdbool.h>
 
- 
+
 void gestion_client(){
 
      
@@ -31,6 +31,7 @@ void gestion_client(){
           
           
     }else if(strlen(profil.nom) != 0){
+
            printf("1. Consultation du profil\n");
            printf("2. Modification du profil\n");
         
@@ -117,6 +118,181 @@ void Gestion_solde(){
    }
 }
 
+void acheter(){
+
+         if(choix == 1){
+
+         printf("enter le id de produit : ");
+         scanf("%d",&choix);
+
+         for(int i = 0 ; i < 16 ; i++){
+
+            if(choix == produits[i].idproduit){
+                     achat = i;
+                     break;
+                  }
+         }
+
+         if(achat >= 0 && achat <= 15){
+
+              printf("Combien voulez-vous acheter : "); 
+              scanf("%d",&quantite);
+
+                 if(quantite <= produits[achat].stock){
+  
+                     total = quantite * produits[achat].prix;
+
+                         printf("pour acheter %s prix : %.2f quantite : %d total de : %.2f \n",produits[achat].nom,produits[achat].prix,quantite,total); 
+
+                         printf("1. pour confirmation\n 0. pour annulation\n");
+                         printf("enter ton choix : ");
+                         scanf("%d",&choix);
+
+                     if(choix == 1){
+
+                            if(total <= profil.solde){
+
+                                 printf("***Achat réussi***");
+
+                               profil.solde -= total;
+                               produits[achat].stock -= quantite;
+
+                               achatproduits += quantite;
+                               achatprix += total;
+                         }
+                     }
+                 }
+                  else{
+
+                      printf("Nous n'avons pas cette quantite");
+                  }
+   }
+}
+}
+
+//menu 3
+void affichage_catalogue(){
+
+   for(int i = 0 ; i < 16 ; i++){
+
+        printf("categorie : %s | nom : %s | prix : %.2fdh | stock : %d\n",produits[i].categorie,produits[i].nom,produits[i].prix,produits[i].stock);
+
+   }
+}
+void details_produit(){
+
+        printf("| idproduit > categorie > nom > prix > stock > description > date dajoute |\n");
+
+   for(int i = 0 ; i < 16 ; i++){
+
+        printf("|%d|%s|%s|%.2fd|%d|%s|%d/%d/%d\n",produits[i].idproduit,produits[i].categorie,produits[i].nom,produits[i].prix,produits[i].stock,produits[i].description,produits[i].dateAjout.jour,produits[i].dateAjout.mois,produits[i].dateAjout.annee);
+
+   }
+         printf("===pour acheter un produit \nentrer 1\n pour quitter enter 0\n===");
+       
+         printf("enter ton choix: ");
+         scanf("%d",&choix);
+
+         if(choix == 1){
+
+              acheter();
+         }
+}
+void recherche_produits(){
+
+        printf("recherche par\n 1-nom\n 2-categorie\n");
+
+        printf("entrer ton choix : ");
+        scanf("%d",&choix);
+
+      if(choix == 1){
+
+        printf("entrer le nom de produits : ");
+        scanf(" %[^\n]",recherche);
+
+        for(int i = 0; i < 16; i++){
+
+               if(strcmp(produits[i].nom,recherche) == 0){
+
+        printf("|idproduit : %d|categorie : %s|nom : %s|prix : %.2fd|stock : %d|description : %s|date dajoute : %d/%d/%d\n",produits[i].idproduit,produits[i].categorie,produits[i].nom,produits[i].prix,produits[i].stock,produits[i].description,produits[i].dateAjout.jour,produits[i].dateAjout.mois,produits[i].dateAjout.annee);
+        
+               }
+        }
+
+      }else if(choix == 2){
+           
+        printf("entrer le nom de categorie : ");
+        scanf(" %[^\n]",recherche);
+
+        for(int i = 0; i < 16; i++){
+
+               if(strcmp(produits[i].categorie,recherche) == 0){
+
+       printf("|idproduit : %d|categorie : %s|nom : %s|prix : %.2fd|stock : %d|description : %s|date dajoute : %d/%d/%d\n",produits[i].idproduit,produits[i].categorie,produits[i].nom,produits[i].prix,produits[i].stock,produits[i].description,produits[i].dateAjout.jour,produits[i].dateAjout.mois,produits[i].dateAjout.annee);
+        
+               }
+          }
+      }else{
+              printf("introuvable dans ce menu\n"); 
+      }
+}
+
+/*void Tri_produits(){
+
+        printf("tri par\n 1-prix\n 2-nom\n");
+
+        printf("entrer ton choix : ");
+        scanf("%d",&choix);
+
+      if(choix == 1){
+        
+        printf("tri par\n 1.croissant\n 2.décroissant\n");
+
+        printf("entrer ton choix : ");
+        scanf("%d",&choix);
+        
+          if(choix == 1){
+
+            for(int i = 0; i < 15; i++){
+             
+               for(int j = i + 1 ; i < 16 ; j++){
+
+                   if(produits[i].prix > produits[j].prix){
+
+                       triprix = j;
+                  
+              }
+            }
+          }
+        }
+}*/
+
+void catalogue_produits(){
+
+   printf("\n===Catalogue des Produits===\n");
+
+   printf("1.affichage catalogue \n2.details produit\n3.recherche produits\n ");
+
+         printf("enter ton choix: ");
+         scanf("%d",&choix);
+
+   switch(choix){
+
+         case 1:
+         affichage_catalogue();
+         break;
+         case 2:
+         details_produit();
+         break;
+         case 3:
+         recherche_produits();
+         break;
+         
+
+   }
+
+}
+
 
 void Menu(){
 
@@ -146,7 +322,7 @@ void Menu(){
          break;
       case 3:
          printf("\n===Consultation des produits===\n");
-         
+         catalogue_produits();
          break;
       case 4:
          printf("\n===Effectuer un achat==\n");

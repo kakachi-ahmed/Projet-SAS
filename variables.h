@@ -24,12 +24,20 @@ typedef struct{
     int stock;
     char description[100];
     Date dateAjout;
-} Produit;
+}Produit;
 
 char nvprenom[50];
 char nvnom[50];
 int soldplus = 3;
 int choix;
+char recherche[50];
+int triprix = 0;
+int achat = 0;
+float total;
+int quantite;
+
+int achatproduits = 0;
+int achatprix = 0;
 
 Produit produits[16] = {
     {1, "Carte Amazon", "Amazon", 50.0, 10, "Carte cadeau Amazon 50dh", {1,1,2025}},
