@@ -39,6 +39,7 @@ int quantite;
 int achatproduits = 0;
 int achatprix = 0;
 
+int choix2;
 Produit produits[16] = {
     {1, "Carte Amazon", "Amazon", 50.0, 10, "Carte cadeau Amazon 50dh", {1,1,2025}},
     {2, "Carte Amazon", "Amazon", 100.0, 10, "Carte cadeau Amazon 100dh", {1,1,2025}},

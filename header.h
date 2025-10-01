@@ -1,6 +1,7 @@
 #include "function.c"
 
 
+void Menu();
 void gestion_client();
 void Gestion_solde();
 void acheter();
@@ -9,5 +10,5 @@ void affichage_catalogue();
 void details_produit();
 void recherche_produits();
 void catalogue_produits();
+void statistiques();
 
-void Menu();
