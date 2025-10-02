@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdbool.h>
+#include <ctype.h>
 
 void gestion_client()
 {
@@ -11,18 +12,64 @@ void gestion_client()
 
       printf("\n===Creer un compte==\n");
 
-      printf("enter ton prenom : ");
-      scanf(" %[^\n]", profil.prenom);
+      do
+      {
+         check = true;
 
-      printf("entrer ton nom : ");
-      scanf(" %[^\n]", profil.nom);
+         printf("enter ton prenom : ");
+         scanf(" %[^\n]", profil.prenom);
 
-      strcpy(profil.id, profil.prenom);
+         for (int i = 0; profil.prenom[i] != '\0'; i++)
+         {
+
+            if (!isalpha(profil.prenom[i]) && profil.nom[i] != ' ')
+            {
+
+               check = false;
+               printf("uniquement des lettres sont autorise\n");
+               break;
+            }
+         }
+      } while (!check);
+
+      do
+      {
+         check = true;
+
+         printf("enter ton nom : ");
+         scanf(" %[^\n]", profil.nom);
+
+         for (int i = 0; profil.nom[i] != '\0'; i++)
+         {
+
+            if (!isalpha(profil.prenom[i]) && profil.nom[i] != ' ')
+            {
+
+               check = false;
+               printf("uniquement des lettres sont autorise\n");
+               break;
+            }
+         }
+      } while (!check);
+
+      strcpy(prenomnom, profil.prenom);
+      strcat(prenomnom, ".");
+      strcat(prenomnom, profil.nom);
+
+      for (int i = 0; prenomnom[i] != '\0'; i++)
+      {
+         if (prenomnom[i] != ' ')
+         {
+            sansspace[j] = prenomnom[i];
+            j++;
+         }
+      }
+      sansspace[j] = '\0';
+
+      profil.id[0] = sansspace[0];
       strcat(profil.id, "2025");
 
-      strcpy(profil.mail, profil.prenom);
-      strcat(profil.mail, ".");
-      strcat(profil.mail, profil.nom);
+      strcpy(profil.mail, sansspace);
       strcat(profil.mail, "@kakachi.com");
 
       profil.solde = 1000.00;
@@ -115,7 +162,7 @@ void Gestion_solde()
          else if (choix == 2)
          {
 
-            printf("Retour a la liste");
+            printf("Retour a menu\n");
          }
          else
          {
@@ -138,67 +185,107 @@ void Gestion_solde()
 
 void acheter()
 {
-   printf("===pour acheter un produit entrer 1\n pour quitter enter 0\n===");
-
-   printf("enter ton choix: ");
-   scanf("%d", &choix);
-
-   if (choix == 1)
+   if (strlen(profil.nom) != 0)
    {
-      printf("enter le id de produit : ");
-      scanf("%d", &choix);
+      printf("\n1. pour acheter un produit \n 2. pour quitter\n===");
 
-      for (int i = 0; i < 16; i++)
+      printf("enter ton choix: ");
+      scanf("%d", &choix2);
+
+      if (choix2 == 1)
       {
+         printf("enter le id de produit : ");
+         scanf("%d", &choix);
 
-         if (choix == produits[i].idproduit)
-         {
-            achat = i;
-            break;
-         }
-      }
-
-      if (achat >= 0 && achat <= 15)
-      {
-
-         printf("Combien voulez-vous acheter : ");
-         scanf("%d", &quantite);
-
-         if (quantite <= produits[achat].stock)
+         for (int i = 0; i < 16; i++)
          {
 
-            total = quantite * produits[achat].prix;
-
-            printf("pour acheter %s prix : %.2f quantite : %d total de : %.2f \n", produits[achat].nom, produits[achat].prix, quantite, total);
-
-            printf("1. pour confirmation\n 0. pour annulation\n");
-            printf("enter ton choix : ");
-            scanf("%d", &choix);
-
-            if (choix == 1)
+            if (choix == produits[i].idproduit)
+            {
+               achat = i;
+               break;
+            }
+            else
             {
 
-               if (total <= profil.solde)
-               {
-
-                  printf("***Achat réussi***");
-
-                  profil.solde -= total;
-                  produits[achat].stock -= quantite;
-
-                  achatproduits += quantite;
-                  achatprix += total;
-               }
+               printf("le id de produit n'pas trouver");
             }
          }
-         else
+
+         if (achat >= 0 && achat <= 15)
          {
 
-            printf("Nous n'avons pas cette quantite");
+            printf("Combien voulez-vous acheter : ");
+            scanf("%d", &quantite);
+
+            if (quantite <= produits[achat].stock)
+            {
+
+               total = quantite * produits[achat].prix;
+
+               printf("pour acheter %s prix : %.2f quantite : %d total de : %.2f \n", produits[achat].nom, produits[achat].prix, quantite, total);
+
+               printf("1. pour confirmation\n 2. pour annulation\n");
+               printf("enter ton choix : ");
+               scanf("%d", &choix);
+
+               if (choix == 1)
+               {
+
+                  if (total <= profil.solde)
+                  {
+
+                     printf("***Achat réussi***");
+
+                     profil.solde -= total;
+                     produits[achat].stock -= quantite;
+
+                     achatproduits += quantite;
+                     achatprix += total;
+
+                     idchat[a] = achat;
+                     strcpy(nomchat[a], produits[achat].nom);
+                     prixchat[a] = produits[achat].prix;
+                     quantitechat[a] = quantite;
+                     a++;
+                  }
+                  else
+                  {
+
+                     printf("Votre solde n'est pas suffisant pour finaliser l'achat");
+                  }
+               }
+               else if (choix == 2)
+               {
+
+                  printf("annulation");
+               }
+               else
+               {
+
+                  printf("introuvable dans ce menu\n");
+               }
+            }
+            else
+            {
+
+               printf("Nous n'avons pas cette quantite");
+            }
          }
       }
-   }else{
-          Menu();
+      else if (choix2 == 2)
+      {
+         printf("quitter");
+      }
+      else
+      {
+         printf("introuvable dans ce menu\n");
+      }
+   }
+   else
+   {
+
+      printf("créer d'abord un compte");
    }
 }
 
@@ -211,6 +298,7 @@ void affichage_catalogue()
 
       printf("categorie : %s | nom : %s | prix : %.2fdh | stock : %d\n", produits[i].categorie, produits[i].nom, produits[i].prix, produits[i].stock);
    }
+   acheter();
 }
 void details_produit()
 {
@@ -227,42 +315,95 @@ void details_produit()
 void recherche_produits()
 {
 
-   printf("recherche par\n 1-nom\n 2-categorie\n");
+   printf("recherche par\n 1-nom\n 2-categorie\n 3. prix");
 
    printf("entrer ton choix : ");
    scanf("%d", &choix);
 
    if (choix == 1)
    {
-
+      check = false;
       printf("entrer le nom de produits : ");
       scanf(" %[^\n]", recherche);
 
+      for (x = 0; recherche[x] != '\0'; x++)
+      {
+         if (recherche[x] >= 'A' && recherche[x] <= 'Z')
+            lowercherche[x] = recherche[x] + 32;
+         else
+            lowercherche[x] = recherche[x];
+      }
+      lowercherche[x] = '\0';
+
       for (int i = 0; i < 16; i++)
       {
 
-         if (strcmp(produits[i].nom, recherche) == 0)
+         if (strstr(produits[i].nom, lowercherche) != NULL)
          {
 
             printf("|idproduit : %d|categorie : %s|nom : %s|prix : %.2fd|stock : %d|description : %s|date dajoute : %d/%d/%d\n", produits[i].idproduit, produits[i].categorie, produits[i].nom, produits[i].prix, produits[i].stock, produits[i].description, produits[i].dateAjout.jour, produits[i].dateAjout.mois, produits[i].dateAjout.annee);
+            check = true;
          }
       }
+      if (check)
+         acheter();
+      if (!check)
+         printf("le nom de produits n'est pas trouver\n");
    }
    else if (choix == 2)
    {
-
+      check = false;
       printf("entrer le nom de categorie : ");
       scanf(" %[^\n]", recherche);
+
+      for (x = 0; recherche[x] != '\0'; x++)
+      {
+         if (recherche[x] >= 'A' && recherche[x] <= 'Z')
+            lowercherche[x] = recherche[x] + 32;
+         else
+            lowercherche[x] = recherche[x];
+      }
+      lowercherche[x] = '\0';
 
       for (int i = 0; i < 16; i++)
       {
 
-         if (strcmp(produits[i].categorie, recherche) == 0)
+         if (strstr(produits[i].categorie, lowercherche) != NULL)
          {
 
             printf("|idproduit : %d|categorie : %s|nom : %s|prix : %.2fd|stock : %d|description : %s|date dajoute : %d/%d/%d\n", produits[i].idproduit, produits[i].categorie, produits[i].nom, produits[i].prix, produits[i].stock, produits[i].description, produits[i].dateAjout.jour, produits[i].dateAjout.mois, produits[i].dateAjout.annee);
+            check = true;
+            acheter();
          }
       }
+      if (check)
+         acheter();
+      if (!check)
+         printf("le nom de categorie n'est pas trouver\n");
+   }
+   else if (choix == 3)
+   {
+
+      printf("enter min prix : ");
+      scanf("%d", &minprix);
+
+      printf("enter max prix : ");
+      scanf("%d", &minprix);
+
+      for (int i = 0; i < 16; i++)
+      {
+
+         if (minprix >= produits[i].prix && maxprix <= produits[i].prix)
+         {
+
+            printf("|idproduit : %d|categorie : %s|nom : %s|prix : %.2fd|stock : %d|description : %s|date dajoute : %d/%d/%d\n", produits[i].idproduit, produits[i].categorie, produits[i].nom, produits[i].prix, produits[i].stock, produits[i].description, produits[i].dateAjout.jour, produits[i].dateAjout.mois, produits[i].dateAjout.annee);
+            check = true;
+         }
+      }
+      if (check)
+         acheter();
+      if (!check)
+         printf("Il n'y a pas de produit à ce prix \n");
    }
    else
    {
@@ -270,34 +411,75 @@ void recherche_produits()
    }
 }
 
-/*void Tri_produits(){
+/*void Tri_produits()
+{
 
-        printf("tri par\n 1-prix\n 2-nom\n");
+   printf("tri par\n 1-prix\n 2-nom\n");
+   printf("entrer ton choix : ");
+   scanf("%d", &choix);
 
-        printf("entrer ton choix : ");
-        scanf("%d",&choix);
+   if (choix == 1)
+   {
 
-      if(choix == 1){
+      printf("tri par\n 1.croissant\n 2.décroissant\n");
+      printf("entrer ton choix : ");
+      scanf("%d", &choix);
 
-        printf("tri par\n 1.croissant\n 2.décroissant\n");
+      for (int i = 0; i < 16 - 1; i++)
+      {
+         sort = i;
+         for (int j = i + 1; j < 16; j++)
+         {
 
-        printf("entrer ton choix : ");
-        scanf("%d",&choix);
+            if ((choix == 1 && produits[j].prix < produits[sort].prix) || (choix == 2 && produits[j].prix > produits[sort].prix))
+            {
 
-          if(choix == 1){
-
-            for(int i = 0; i < 15; i++){
-
-               for(int j = i + 1 ; i < 16 ; j++){
-
-                   if(produits[i].prix > produits[j].prix){
-
-                       triprix = j;
-
-              }
+               sort = j;
             }
-          }
-        }
+         }
+         if (sort != i)
+         {
+            Produit temp = produits[i];
+             produits[i] = produits[sort];
+                  produits[sort] = temp;
+         }
+      }
+   }
+   else if (choix == 2)
+   { 
+
+      printf("tri par\n 1.croissant (a->z)\n 2.décroissant (z->a)\n");
+      printf("entrer ton choix : ");
+      scanf("%d", &choix);
+
+      for (int i = 0; i < 16 - 1; i++)
+      {
+         sort = i;
+         for (int j = i + 1; j < 16; j++)
+         {
+
+            if ((choix == 1 && strcmp(produits[j].nom, produits[sort].nom) < 0) || (choix == 2 && strcmp(produits[j].nom, produits[sort].nom) > 0))
+                
+            {
+               sort = j;
+            }
+         }
+         if (sort != i)
+         {
+          
+         }
+      }
+   }
+   else
+   {
+      printf("introuvable dans ce menu\n");
+   }
+
+   for (int i = 0; i < 16; i++)
+   {
+      printf("|%d| %s | %.2f DH | %s | stock:%d\n",
+      produits[i].idproduit, produits[i].nom, produits[i].prix, produits[i].categorie, produits[i].stock);
+   }
 }*/
 
 void catalogue_produits()
@@ -330,9 +512,13 @@ void statistiques()
 
    if (strlen(profil.nom) != 0)
    {
+      for (int i = 0; i < a; i++)
+      {
 
-      printf("J'ai achete %d produits : ", achatproduits);
-      printf("Le prix total que j'ai achete est de %d dirhams. : ", achatprix);
+         printf("jai achete le produit %s de id %d de prix %.2f le quantite est %d\n", nomchat[a], idchat[a], prixchat[a], quantitechat[a]);
+      }
+      printf("J'ai achete %d produits : \n", achatproduits);
+      printf("Le prix total que j'ai achete est de %d dirhams. : \n", achatprix);
    }
    else
    {
@@ -375,9 +561,6 @@ void Menu()
       case 4:
          printf("\n===Mon Statistique==\n");
          statistiques();
-         break;
-      case 5:
-         acheter();
          break;
       case 0:
          printf("au revoir\n");
