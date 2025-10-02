@@ -48,7 +48,6 @@ int j = 0;
 int choix2;
 
 int a = 0;
-int idchat[160];
 char nomchat[160][30];
 float prixchat[160];
 int quantitechat[160];
@@ -83,3 +82,6 @@ Produit produits[16] = {
     {15, "carte playStation", "playStation", 200.0, 10, "Carte cadeau PlayStation 200dh", {1,1,2025}},
     {16, "carte playStation", "playStation", 500.0, 10, "Carte cadeau PlayStation 500dh", {1,1,2025}}
 };
+
+
+

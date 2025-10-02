@@ -1,4 +1,4 @@
-#include "function.c"
+
 
 
 void Menu();
@@ -9,6 +9,7 @@ void acheter();
 void affichage_catalogue();
 void details_produit();
 void recherche_produits();
+void Tri_produits();
 void catalogue_produits();
 void statistiques();
 
