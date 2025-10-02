@@ -1,9 +1,7 @@
-#include "header.h"
 #include "variables.h"
 #include <stdio.h>
 #include <string.h>
 #include <stdbool.h>
-#include <ctype.h>
 
 void gestion_client()
 {
@@ -39,7 +37,7 @@ void gestion_client()
       strcpy(profil.mail, sansspace);
       strcat(profil.mail, "@kakachi.com");
 
-      profil.solde = 1000;
+      profil.solde = 0;
 
       printf("\n===Profil cree avec succes===\n");
    }
@@ -98,12 +96,12 @@ void Gestion_solde()
       if (choix == 1)
       {
 
-         printf("le sold est %.2fdh", profil.solde);
+         printf("le sold est %.2fdh\n", profil.solde);
       }
       else if (choix == 2)
       {
 
-         printf("Il vous reste %d fois pour utiliser le credit virtuel de 500dh\n", soldplus);
+         printf("Il vous reste %d fois pour utiliser le credit virtuel de 1000dh\n", soldplus);
 
          printf("1. utiliser le credit virtuel\n");
          printf("2. quitter\n");
@@ -118,7 +116,7 @@ void Gestion_solde()
             {
 
                soldplus--;
-               profil.solde += 500.00;
+               profil.solde += 1000.00;
             }
             else
             {
@@ -173,12 +171,12 @@ void acheter()
                check = true;
                break;
             }
+         }
+         if (!check)
+         {
 
-         }if(!check)
-            {
-
-               printf("le id de produit n'pas trouver");
-            }
+            printf("le id de produit n'pas trouver");
+         }
 
          if (achat >= 0 && achat <= 15)
          {
@@ -202,7 +200,7 @@ void acheter()
 
                   if (total <= profil.solde)
                   {
-
+    
                      profil.solde -= total;
                      produits[achat].stock -= quantite;
 
@@ -215,8 +213,6 @@ void acheter()
                      a++;
 
                      printf("***Achat reussi***");
-
-
                   }
                   else
                   {
@@ -254,7 +250,7 @@ void acheter()
    else
    {
 
-      printf("créer d'abord un compte");
+      printf("créer d'abord un compte pour acheter");
    }
 }
 
@@ -265,19 +261,19 @@ void affichage_catalogue()
    for (int i = 0; i < 16; i++)
    {
 
-      printf("categorie : %s | id : %d |nom : %s | prix : %.2fdh | stock : %d\n", produits[i].categorie,produits[i].idproduit,produits[i].nom, produits[i].prix, produits[i].stock);
+      printf("categorie : %s - id : %d - nom : %s - prix : %.2fdh - stock : %d\n", produits[i].categorie, produits[i].idproduit, produits[i].nom, produits[i].prix, produits[i].stock);
    }
    acheter();
 }
 void details_produit()
 {
 
-   printf("| idproduit > categorie > nom > prix > stock > description > date dajoute |\n");
+   printf("idproduit > categorie > nom > prix > stock > description > date dajoute \n");
 
    for (int i = 0; i < 16; i++)
    {
 
-      printf("|%d|%s|%s|%.2fd|%d|%s|%d/%d/%d\n", produits[i].idproduit, produits[i].categorie, produits[i].nom, produits[i].prix, produits[i].stock, produits[i].description, produits[i].dateAjout.jour, produits[i].dateAjout.mois, produits[i].dateAjout.annee);
+      printf("%d - %s - %s - %.2fd - %d - %s - %d/%d/%d\n", produits[i].idproduit, produits[i].categorie, produits[i].nom, produits[i].prix, produits[i].stock, produits[i].description, produits[i].dateAjout.jour, produits[i].dateAjout.mois, produits[i].dateAjout.annee);
    }
    acheter();
 }
@@ -310,7 +306,7 @@ void recherche_produits()
          if (strstr(produits[i].nom, lowercherche) != NULL)
          {
 
-            printf("|idproduit : %d|categorie : %s|nom : %s|prix : %.2fdh|stock : %d|description : %s|date dajoute : %d/%d/%d\n", produits[i].idproduit, produits[i].categorie, produits[i].nom, produits[i].prix, produits[i].stock, produits[i].description, produits[i].dateAjout.jour, produits[i].dateAjout.mois, produits[i].dateAjout.annee);
+            printf("idproduit : %d - categorie : %s - nom : %s - prix : %.2fdh - stock : %d - date dajoute : %d/%d/%d\n", produits[i].idproduit, produits[i].categorie, produits[i].nom, produits[i].prix, produits[i].stock, produits[i].dateAjout.jour, produits[i].dateAjout.mois, produits[i].dateAjout.annee);
             check = true;
          }
       }
@@ -340,9 +336,8 @@ void recherche_produits()
          if (strstr(produits[i].categorie, lowercherche) != NULL)
          {
 
-            printf("|idproduit : %d|categorie : %s|nom : %s|prix : %.2fdh|stock : %d|description : %s|date dajoute : %d/%d/%d\n", produits[i].idproduit, produits[i].categorie, produits[i].nom, produits[i].prix, produits[i].stock, produits[i].description, produits[i].dateAjout.jour, produits[i].dateAjout.mois, produits[i].dateAjout.annee);
+            printf("categorie : %s - id : %d - nom : %s - prix : %.2fdh - stock : %d\n", produits[i].categorie, produits[i].idproduit, produits[i].nom, produits[i].prix, produits[i].stock);
             check = true;
-
          }
       }
       if (check)
@@ -357,7 +352,7 @@ void recherche_produits()
       scanf("%d", &minprix);
 
       printf("enter max prix : ");
-      scanf("%d", &minprix);
+      scanf("%d", &maxprix);
 
       for (int i = 0; i < 16; i++)
       {
@@ -365,7 +360,7 @@ void recherche_produits()
          if (minprix >= produits[i].prix && maxprix <= produits[i].prix)
          {
 
-            printf("|idproduit : %d|categorie : %s|nom : %s|prix : %.2fdh|stock : %d|description : %s|date dajoute : %d/%d/%d\n", produits[i].idproduit, produits[i].categorie, produits[i].nom, produits[i].prix, produits[i].stock, produits[i].description, produits[i].dateAjout.jour, produits[i].dateAjout.mois, produits[i].dateAjout.annee);
+            printf("idproduit : %d - categorie : %s - nom : %s - prix : %.2fdh - stock : %d - date dajoute : %d/%d/%d\n", produits[i].idproduit, produits[i].categorie, produits[i].nom, produits[i].prix, produits[i].stock, produits[i].dateAjout.jour, produits[i].dateAjout.mois, produits[i].dateAjout.annee);
             check = true;
          }
       }
@@ -380,10 +375,10 @@ void recherche_produits()
    }
 }
 
-void Tri_produits()
+void tri_produits()
 {
 
-   printf("tri par\n 1-prix\n 2-nom\n");
+   printf("tri par :\n1-prix\n2-nom\n");
    printf("entrer ton choix : ");
    scanf("%d", &choix);
 
@@ -409,17 +404,13 @@ void Tri_produits()
          if (sort != i)
          {
             Produit temp = produits[i];
-             produits[i] = produits[sort];
-                  produits[sort] = temp;
+            produits[i] = produits[sort];
+            produits[sort] = temp;
          }
       }
    }
    else if (choix == 2)
-   { 
-
-      printf("tri par\n 1.croissant (a->z)\n 2.décroissant (z->a)\n");
-      printf("entrer ton choix : ");
-      scanf("%d", &choix);
+   {
 
       for (int i = 0; i < 16 - 1; i++)
       {
@@ -427,18 +418,17 @@ void Tri_produits()
          for (int j = i + 1; j < 16; j++)
          {
 
-            if ((choix == 1 && strcmp(produits[j].nom, produits[sort].nom) < 0) || (choix == 2 && strcmp(produits[j].nom, produits[sort].nom) > 0))
-                
+            if (strcmp(produits[j].nom, produits[sort].nom) < 0)
+
             {
                sort = j;
             }
          }
          if (sort != i)
          {
-             Produit temp = produits[i];
-             produits[i] = produits[sort];
-             produits[sort] = temp;
-          
+            Produit temp = produits[i];
+            produits[i] = produits[sort];
+            produits[sort] = temp;
          }
       }
    }
@@ -449,9 +439,9 @@ void Tri_produits()
 
    for (int i = 0; i < 16; i++)
    {
-      printf("|%d| %s | %.2f DH | %s | stock:%d\n",
-      produits[i].idproduit, produits[i].nom, produits[i].prix, produits[i].categorie, produits[i].stock);
+      printf("id : %d - nom : %s - prix : %.2fdh - categorie : %s - stock: %d\n", produits[i].idproduit, produits[i].nom, produits[i].prix, produits[i].categorie, produits[i].stock);
    }
+   acheter();
 }
 
 void catalogue_produits()
@@ -459,28 +449,29 @@ void catalogue_produits()
 
    printf("\n===Catalogue des Produits===\n");
 
-   printf("1.affichage catalogue \n2.details produit\n3.recherche produits\n ");
+      printf("1.affichage catalogue \n2.details produit\n3.recherche produits\n4.Tri produits\n");
 
-   printf("enter ton choix: ");
-   scanf("%d", &choix);
+      printf("enter ton choix: ");
+      scanf("%d", &choix);
 
-   switch (choix)
-   {
+      switch (choix)
+      {
 
-   case 1:
-      affichage_catalogue();
-      break;
-   case 2:
-      details_produit();
-      break;
-   case 3:
-      recherche_produits();
-      break;
-   case 4:
-      Tri_produits();
-   default:
-      printf("introuvable dans ce menu\n");
-   }
+      case 1:
+         affichage_catalogue();
+         break;
+      case 2:
+         details_produit();
+         break;
+      case 3:
+         recherche_produits();
+         break;
+      case 4:
+         tri_produits();
+         break;
+      default:
+         printf("introuvable dans ce menu\n");
+      }
 }
 
 void statistiques()
@@ -491,7 +482,7 @@ void statistiques()
       for (int i = 0; i < a; i++)
       {
 
-      printf("jai achete le produit %s de prix %.2f le quantite est %d\n", nomchat[i], prixchat[i], quantitechat[i]);
+         printf("jai achete le produit %s de prix %.2f le quantite est %d\n", nomchat[i], prixchat[i], quantitechat[i]);
       }
       printf("J'ai achete %d produits  \n", achatproduits);
       printf("Le prix total que j'ai achete est de %d dirhams \n", achatprix);
@@ -512,7 +503,6 @@ void Menu()
       printf("1.  Gestion du profil client\n");
       printf("2.  Gestion du solde virtuel\n");
       printf("3.  Consultation des produits\n");
-      ;
       printf("4.  Mes statistiques\n");
       printf("0.  Quitter l'application\n");
 
